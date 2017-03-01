@@ -1,0 +1,88 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+  <!-- Content Header (Page header) -->
+  <include file="Public/breadcrumb"/>
+  
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-list"></i> 会员列表
+              <!-- <a href="{:U('Admin/Wechat/add')}"> -->
+              <!-- <button type="button" class="btn btn-info">
+                  <i class="ace-icon fa fa-plus bigger-110"></i>
+              </button> -->
+              </a>
+             <!--  <a href="javascript:;" class="btn pull-right btn-default" data-url="http://www.tp-shop.cn/Doc/Index/article/id/178/developer/phper.html" onclick="get_help(this)"><i class="fa fa-question-circle"></i> 帮助</a>              
+              <a href="javascript:;" class="btn pull-right btn-default" data-url="http://www.tp-shop.cn/Doc/Index/article/id/283/developer/phper.html" onclick="get_help(this)"><i class="fa fa-question-circle"></i>三级分销</a> -->
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div id="ajax_return">
+              <div class="table-responsive">
+                  <table class="table table-bordered table-hover">
+                      <thead>
+                      <tr>
+                          <td style="width: 1px;" class="text-center">
+                              <!-- <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);"> -->
+                          </td>
+                          <td style="width: 360px;" class="text-center">
+                              昵称
+                          </td>
+                          <td class="text-center">
+                              来源
+                          </td>
+                          <td class="text-center">
+                              创建时间
+                          </td>
+
+                          <td class="text-center">操作</td>
+                      </tr>
+                      </thead>
+                      <tbody>
+
+                      <volist name="lists" id="list">
+                          <tr>
+                              <td class="text-center">
+                                  <!-- <input type="checkbox" name="selected[]" value="{$list.user_id}"> -->
+                              </td>
+                              <td class="text-left"><img style="width:30px;" src="{$list.head_pic}" alt="">&nbsp&nbsp{$list.nickname}</td>
+                              <td class="text-center">{$list.oauth}</td>
+                              <td class="text-center">{$list.reg_time|date='Y-m-d H:i:s',###}</td>
+                              <td class="text-center">
+                                  <a href="{:U('Admin/User/address',array('id'=>$list['user_id']))}" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="编辑"><i class="fa fa-pencil"></i></a>
+                                  <a href="javascript:void(0);" data-href="{:U('Admin/User/del',array('id'=>$list['user_id']))}" onclick="del('{$list[user_id]}',this)" id="button-delete6" data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="删除"><i class="fa fa-trash-o"></i></a>
+                              </td>
+                          </tr>
+                      </volist>
+
+                      </tbody>
+                  </table>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row --> 
+    <div class="pagination" style="margin: 20px 30%;">
+    　　{$page}
+    </div>
+
+  </section>
+  <!-- /.content --> 
+</div>
+<!-- /.content-wrapper --> 
+<script>
+        // 删除操作
+        function del(id,t)
+        {
+            if(!confirm('确定要删除吗?'))
+                return false;
+
+            location.href = $(t).data('href');
+        }
+</script> 
+</body>
+</html>

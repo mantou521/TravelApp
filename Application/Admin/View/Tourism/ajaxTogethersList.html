@@ -1,0 +1,97 @@
+<form method="post" enctype="multipart/form-data" target="_blank" id="form-order">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td style="width: 1px;" class="text-center">
+                <!--
+                    <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                -->    
+                </td>                
+                <td class="text-center">
+                    <a href="javascript:sort('togethers_id');">ID</a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('togethers_name');">发布人</a>
+                </td>
+                
+                <td class="text-left">
+                    <a href="javascript:sort('is_hot');">目的地</a>
+                </td>    
+                <td class="text-left">
+                    <a href="javascript:sort('is_hot');">描述</a>
+                </td>                
+                                 
+                <td class="text-center">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="togethersList" id="list">
+                <tr>
+                    <td class="text-center">
+                       <!-- <input type="checkbox" name="selected[]" value="6">-->
+                        <input type="hidden" name="shipping_code[]" value="flat.flat">
+                    </td>
+                    <td class="text-center">{$list.togethers_id}</td>
+                    <td class="text-left">{$list.togethers_name}</td>
+                    <td class="text-left">{$list.address}</td>
+                    <td class="text-left">
+                    {$list.togethers_content}
+                    </td>
+                                                         
+                                     
+                    <td class="text-center">
+                        <!-- <a  target="_blank" href="{:U('Home/Tourism/togethersInfo',array('id'=>$list['togethers_id']))}" class="btn btn-info" title="查看详情"><i class="fa fa-eye"></i></a> -->
+                        <a href="{:U('Admin/Tourism/addEdittogethers',array('id'=>$list['togethers_id']))}" class="btn btn-primary" title="编辑"><i class="fa fa-pencil"></i></a>
+                       <a href="javascript:if(confirm('你确定要删除?')) location.href='{:U('Admin/Tourism/deltogethers',array('act'=>del,'id'=>$list['togethers_id']))}'" class="btn btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+                        <!--  <a href="javascript:void(0);" onclick="CleartogethersHtml('{$list[togethers_id]}')" class="btn btn-default" title="清除静态缓存页面"><i class="fa fa-fw fa-refresh"></i></a>
+                        <a href="javascript:void(0);" onclick="CleartogethersThumb('{$list[togethers_id]}')" class="btn btn-default" title="清除缩略图缓存"><i class="glyphicon glyphicon-picture"></i></a> -->
+                    </td>                        
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="row">
+    <div class="col-sm-3 text-left"></div>
+    <div class="col-sm-9 text-right">{$page}</div>
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+  
+    /*
+     * 清除静态页面缓存
+     */
+    function CleartogethersHtml(togethers_id)
+    {
+      $.ajax({
+        type:'GET',
+        url:"{:U('Admin/System/CleartogethersHtml')}",
+        data:{togethers_id:togethers_id},
+        dataType:'json',
+        success:function(data){
+          layer.alert(data.msg, {icon: 2});                
+        }
+    });
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function CleartogethersThumb(togethers_id)
+    {
+      $.ajax({
+        type:'GET',
+        url:"{:U('Admin/System/CleartogethersThumb')}",
+        data:{togethers_id:togethers_id},
+        dataType:'json',
+        success:function(data){
+          layer.alert(data.msg, {icon: 2});                
+        }
+    });
+    }   
+</script>

@@ -1,0 +1,101 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+ <include file="Public/breadcrumb"/>
+ <style>#search-form > .form-group{margin-left: 10px;}</style>
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-list"></i> 商品列表</h3>
+        </div>
+        <form method="post" enctype="multipart/form-data" target="_blank" id="form-order">
+        <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>              
+                <td class="text-left">选择商品</td>
+                <td class="text-left">商品id</td>
+                <td class="text-left">
+                    商品名
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <input type="hidden" class="id" name="id" value="<?php echo $_GET['id']; ?> "> 
+            <volist name="goods" id="good">
+            <tr>
+              <td class="text-left">
+              <?php if($good['checked'] == "1"){ ?>
+                <input class="checked" checked="checked" name="checkbox[]" type="checkbox" value="{$good.goods_id}">
+              <?php ;}else{ ?>
+                <input class="checked"  name="checkbox[]" type="checkbox" value="{$good.goods_id}">
+              <?php ;} ?>
+              </td>
+              <td class="text-left">
+                <img src="{$good.original_img}" style="width:36px;" alt="">{$good.goods_id}
+              </td>
+              <td class="text-left">
+                {$good.goods_name}
+              </td>
+            </tr>
+            </volist>
+                
+                
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pull-right" style=" position: fixed;bottom: 30px;right: 30px;">
+        <button class="btn btn-primary" id="addcheck" title="" data-toggle="tooltip" type="button" data-original-title="保存">保存</button>
+    </div>
+</form>
+<!-- <div class="row">
+    <div class="col-sm-3 text-left"></div>
+    <div class="col-sm-9 text-right">{$page}</div>
+</div> -->
+<script>
+    $("#addcheck").click(function(event) {
+      var checks = document.getElementsByName("checkbox[]");
+      n = 0;
+      for(i=0;i<checks.length;i++){
+          if(checks[i].checked)
+              n++;
+      }
+      if (n < 6) {
+        alert("您必须选择6个以上");
+        return false;
+      };
+      var ids =[]; 
+      $('input[name="checkbox[]"]:checked').each(function(){    
+        ids.push($(this).val());    
+      });
+      var id = $(".id").val();
+      //构造ajax、
+      $.ajax({
+        url:"index.php?s=/admin/goods/checkgoods",
+        type:'post',
+        // data:{'name名':val值}
+        data:{'ids':ids,'id':id},
+        dataType:'json',
+        success:function(data){
+          if(data){
+            alert('数据提交成功');
+            setTimeout( window.history.go(-1) ,3000);
+          }else{
+            alert('数据提交失败');
+          }
+        }
+      })
+    });
+</script>
+      </div>
+    </div>
+    <!-- /.row --> 
+  </section>
+  <!-- /.content --> 
+</div>
+<!-- /.content-wrapper --> 
+
+</body>
+</html>

@@ -1,0 +1,350 @@
+<include file="Public/min-header"/>
+<script type="text/javascript">
+    window.UEDITOR_Admin_URL = "__ROOT__/Public/plugins/Ueditor/";
+    var URL_upload = "{$URL_upload}";
+    var URL_fileUp = "{$URL_fileUp}";
+    var URL_scrawlUp = "{$URL_scrawlUp}";
+    var URL_getRemoteImage = "{$URL_getRemoteImage}";
+    var URL_imageManager = "{$URL_imageManager}";
+    var URL_imageUp = "{$URL_imageUp}";
+    var URL_getMovie = "{$URL_getMovie}";
+    var URL_home = "{$URL_home}";    
+</script>
+<style type="text/css">
+  .col_checkbox{border: 1px solid #ccc;margin: 14px; padding: 0; min-height: 30px;}
+  .tina{line-height: 50px;}
+</style>
+<load href="__ROOT__/Public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/Public/plugins/Ueditor/ueditor.all.js"/>
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+       <div class="row">
+      <div class="col-md-12">
+      
+      <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">推荐旅游线路</h3>
+                  <!-- <a href="{:U('Tourism/linesList')}" data-toggle="tooltip" title="" class="btn btn-default pull-right" data-original-title="返回"><i class="fa fa-reply"></i></a> -->
+                </div>
+                <form class="form-horizontal" action="{:U('Tourism/addorder')}" id="add_post" method="post">
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label tina">旅游线路</label>
+                      <div class="col-sm-3 col_checkbox">
+                          <volist name="line" id="le">
+                          <div class="col-sm-8" style="height: 30px;">
+                            <input type="checkbox" name="lines_id"  value="{$le.lines_id}"><a target="_blank" class="" href="/index.php?s=/Admin/Tourism/lines/act/edit/lines_id/{$le.lines_id}"><i class="fa fa-pencil">{$le.title}</i></a>
+                          </div>
+                          </volist>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label tina">限时优惠</label>
+                      <div class="col-sm-3 col_checkbox" >
+                          <volist name="benefit" id="bt">
+                          <div class="col-sm-8" style="height: 30px;">
+                            <input type="checkbox" name="benefits_id"  value="{$bt.benefits_id}"><a target="_blank" href="/index.php?s=/Admin/Tourism/benefits/act/edit/benefits_id/{$bt.benefits_id}"><i class="fa fa-pencil">{$bt.title}</i></a>
+                          </div>
+                          </volist>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label tina">结伴拼游</label>
+                      <div class="col-sm-3 col_checkbox">
+                          <volist name="together" id="tr">
+                          <div class="col-sm-8" style="height: 30px;">
+                            <input type="checkbox" name="togethers_id"  value="{$tr.togethers_id}"><a href="/index.php?s=/Admin/Tourism/addEdittogethers/id/{$tr.togethers_id}" target="_blank"><i class="fa fa-pencil">{$tr.address}</i></a>
+                          </div>
+                          </volist>
+                      </div>
+                    </div>
+                    <input type="hidden" name="table" class="table" value="">
+                    <input type="hidden" name="ids" class="ids" value="">
+<script>
+  // console.log($('.form-horizontal .form-group'));
+  $('.form-group .col-sm-3 .col-sm-8 input').click(function(){
+    if($(this).prop('checked')){
+      // alert(1);
+      $(this).parent().siblings().find('input').attr('checked',false);
+      $(this).parents('.form-group').siblings().find('input').attr('checked',false)
+      // console.log($(this).val());
+      // console.log($(this).attr('name'));
+      $(".table").val($(this).attr('name'));
+      $(".ids").val($(this).val());
+    }else{
+      // alert(0);
+    }
+  });
+</script>
+
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label tina">保险</label>
+                      <div class="col-sm-3" style="border: 1px solid #ccc; margin: 14px; padding: 0;">
+                        <volist name="safety" id="safe">
+                        <div style="height: 30px;" class="col-sm-8">
+                          <input type="radio" name="safety_id"  value="{$safe.id}"><a target="_blank" class="" href="/index.php?s=/Admin/Tourism/addEditsafety/id/{$safe.id}"><i class="fa fa-pencil">{$safe.title}</i></a>
+                        </div>
+                        </volist>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="">
+                        <div class="">
+                          <label for="text" class="col-sm-2 control-label">出发时间</label>
+                          <div class="col-sm-2">
+                                <div class="input-prepend input-group">
+                                        <span class="add-on input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar fa fa-calendar">
+                                                </i>
+                                        </span>
+                                    <input type="date" class="form-control "  name="start_time"  value="<?php if($stp['start_time'] == ""){ echo date("Y-m-d",time());}else{ echo date('Y-m-d', $stp['start_time']);} ?>">                                            
+                                </div>                        
+                          </div>
+                          <label for="text" style="height:30px;text-align:right;line-height:34px;" class="col-sm-1">价钱</label>
+                          <div class="col-sm-4">
+                            成人价：<input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="start_price"  value="{$stp.start_price}" placeholder="成人价" onfocus="if(this.placeholder == '成人价') this.placeholder = ''" 
+                            onblur="if(this.placeholder =='') this.placeholder = '成人价'">
+
+                            儿童价：<input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="child_price"  value="{$stp.child_price}" placeholder="儿童价"  onfocus="if(this.placeholder == '儿童价') this.placeholder = ''" 
+                            onblur="if(this.placeholder =='') this.placeholder = '儿童价'">
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div> 
+                    
+
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label">是否显示</label>
+                      <div class="col-sm-5">
+                        <div class="col-sm-2">
+                           <label><input type="radio" name="is_open" value="1"<if condition="$info[is_open] eq 1"> checked="checked"</if>> 显示 </label>                          
+                        </div>
+                         <div class="col-sm-3">
+                           <label><input type="radio" name="is_open" value="0"<if condition="$info[is_open] eq 0"> checked="checked"</if>> 不显示</label>                          
+                        </div>
+                      </div>
+                    </div> 
+                   
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label">单房数</label>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control" name="difference"  value="{$info.difference}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label">客服电话</label>
+                      <div class="col-sm-2">
+                        <input type="text" class="form-control" name="kefu"  value="{$info.kefu}">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="text" class="col-sm-2 control-label">出游人数</label>
+                      <div class="col-sm-1">
+                        <input type="text" class="form-control" name="adult" placeholder="成人数" onfocus="if(this.placeholder == '成人数') this.placeholder = ''" 
+                            onblur="if(this.placeholder =='') this.placeholder = '成人数'">
+                      </div>
+                      <div class="col-sm-1">
+                        <input type="text" class="form-control" name="child"  placeholder="儿童数" onfocus="if(this.placeholder == '儿童数') this.placeholder = ''" 
+                            onblur="if(this.placeholder =='') this.placeholder = '儿童数'">
+                      </div>
+                    </div>
+                   
+                    <div class="form-group">
+                      <div class="form-box">
+                        <div class="form-time">
+                          <label for="text" class="col-sm-2 control-label">联系方式</label>
+                          <div> </div>
+                          <div class="col-sm-6">
+                            联系人：<input type="text" style="height:32px;text-indent:5px;width: 233px;" name="username[]"  placeholder="联系人" onfocus="if(this.placeholder == '联系人') this.placeholder = ''" 
+                            onblur="if(this.placeholder =='') this.placeholder = '身份证'">
+
+                            身份证：<input type="text" style="height:32px;text-indent:5px;width: 233px;" name="card[]"  placeholder="身份证" onfocus="if(this.placeholder == '身份证') this.placeholder = ''" 
+                            onblur="if(this.placeholder =='') this.placeholder = '身份证'">
+
+                            手机号：<input type="text" style="height:32px;text-indent:5px;width: 233px;" name="tel[]"  placeholder="手机号"  onfocus="if(this.placeholder == '手机号') this.placeholder = ''" 
+                            onblur="if(this.placeholder =='') this.placeholder = '手机号'">
+                          </div>
+                          <div class="col-sm-1 form-add">添加</div>
+                        </div>
+                      </div>
+                    </div> 
+
+                        <style>
+  .form-time{overflow: hidden;margin-bottom: 15px;}
+  .form-add,.form-remove,.form-removes{ height: 30px; width: 60px;background: #00c0ef;line-height: 30px;border-radius: 5px;cursor: pointer;margin-right: 5px;}
+</style>                 
+<script>
+  $('.form-add').click(function() {
+    add();
+  });
+  function add(){
+    $('.form-box').append('<div class="form-time"><label for="text" class="col-sm-2 control-label"></label><div> </div><div class="col-sm-6">联系人：<input type="text" style="height:32px;text-indent:5px;width: 233px;" name="username[]" placeholder="联系人" > 身份证：<input type="text" style="height:32px;text-indent:5px;width: 233px;" name="card[]" placeholder="身份证" > 手机号：<input type="text" style="height:32px;text-indent:5px;width: 233px;" name="tel[]"  placeholder="手机号"></div><div class="col-sm-1 form-remove">删除</div></div>');
+      remove();
+  }
+  function remove(){
+    $('.form-remove').click(function(){
+      $(this).parents('.form-time').remove();
+    });
+  }
+
+  $('.form-removes').click(function() {
+    var leng = $('.form-removes').length;
+    if(leng>=2){
+      $(this).parents('.form-time').remove();
+    }else{
+      alert('刀下留人:(')
+    }
+  });
+</script>        
+
+                     
+                    
+                    <div class="form-group">
+                      <label class="control-label col-sm-2">              
+                        <input type="hidden" name="act" value="{$act}">
+                        <input type="hidden" name="user_id" value="<?php echo I("user_id"); ?>"></label>
+                       <div class="col-sm-8">
+                        <button type="reset" class="btn btn-default">重置</button>
+                          <button type="button"  onclick="checkForm()" class="btn btn-info pull-right">提交</button>
+                       </div>
+                    </div>
+                  </div>
+                  <div class="box-footer row">
+
+                  </div>
+                </form>
+              </div>
+
+          </div>
+     </div>
+  </section>
+</div>
+
+<script type="text/javascript">
+    var editor;
+    $(function () {
+        //具体参数配置在  editor_config.js 中
+        var options = {
+            zIndex: 999,
+            initialFrameWidth: "100%", //初化宽度
+            initialFrameHeight: 400, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+            pasteplain: true, autoHeightEnabled: true,
+            autotypeset: {
+                mergeEmptyline: true,        //合并空行
+                removeClass: true,           //去掉冗余的class
+                removeEmptyline: false,      //去掉空行
+                textAlign: "left",           //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+                imageBlockLine: 'center',    //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+                pasteFilter: false,          //根据规则过滤没事粘贴进来的内容
+                clearFontSize: false,        //去掉所有的内嵌字号，使用编辑器默认的字号
+                clearFontFamily: false,      //去掉所有的内嵌字体，使用编辑器默认的字体
+                removeEmptyNode: false,      //去掉空节点
+                                             //可以去掉的标签
+                removeTagNames: {"font": 1},
+                indent: false,               // 行首缩进
+                indentValue: '0em'           //行首缩进的大小
+            }
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("post_content");
+    });  
+    
+    // 行程简览
+    var editor;
+    $(function () {
+        //具体参数配置在  editor_config.js 中
+        var options = {
+            zIndex: 999,
+            initialFrameWidth: "100%", //初化宽度
+            initialFrameHeight: 400, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+            pasteplain: true, autoHeightEnabled: true,
+            autotypeset: {
+                mergeEmptyline: true,        //合并空行
+                removeClass: true,           //去掉冗余的class
+                removeEmptyline: false,      //去掉空行
+                textAlign: "left",           //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+                imageBlockLine: 'center',    //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+                pasteFilter: false,          //根据规则过滤没事粘贴进来的内容
+                clearFontSize: false,        //去掉所有的内嵌字号，使用编辑器默认的字号
+                clearFontFamily: false,      //去掉所有的内嵌字体，使用编辑器默认的字体
+                removeEmptyNode: false,      //去掉空节点
+                                             //可以去掉的标签
+                removeTagNames: {"font": 1},
+                indent: false,               // 行首缩进
+                indentValue: '0em'           //行首缩进的大小
+            }
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("post_content1");
+    }); 
+    
+  $('#publish_time').daterangepicker({
+    format:"YYYY-MM-DD",
+    singleDatePicker: true,
+    showDropdowns: true,
+    minDate:'2016-01-01',
+    maxDate:'2030-01-01',
+    startDate:'{$info.publish_time|date="Y-m-d",###}',
+      locale : {
+            applyLabel : '确定',
+            cancelLabel : '取消',
+            fromLabel : '起始时间',
+            toLabel : '结束时间',
+            customRangeLabel : '自定义',
+            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+            monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+            firstDay : 1
+        }
+  });
+
+
+  $('.publish_times').daterangepicker({
+    format:"YYYY-MM-DD",
+    singleDatePicker: true,
+    showDropdowns: true,
+    minDate:'2016-01-01',
+    maxDate:'2030-01-01',
+    startDate:'{$info.publish_time|date="Y-m-d",###}',
+      locale : {
+            applyLabel : '确定',
+            cancelLabel : '取消',
+            fromLabel : '起始时间',
+            toLabel : '结束时间',
+            customRangeLabel : '自定义',
+            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+            monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+            firstDay : 1
+        }
+  });
+  
+  function checkForm(){
+    if($('input[name="title"]').val() == ''){
+      alert("请填写文章标题！");
+      return false;
+    }
+    if($('#cat_id').val() == '' || $('#cat_id').val() == 0){
+      alert("请选择文章类别！");
+      return false;
+    }
+    if($('#post_content').val() == ''){
+      alert("请填写文章内容！");
+      return false;
+    }
+    $('#add_post').submit();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<form method="post" enctype="multipart/form-data" target="_blank" id="form-order">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td style="width: 1px;" class="text-center">
+                <!--
+                    <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                -->    
+                </td>                
+                <td class="text-center">
+                    <a href="javascript:sort('id');">ID</a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('safety_name');">标题</a>
+                </td>
+                
+                <td class="text-left">
+                    <a href="javascript:sort('is_hot');">描述</a>
+                </td>                
+                                 
+                <td class="text-center">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            <volist name="safetyList" id="list">
+                <tr>
+                    <td class="text-center">
+                       <!-- <input type="checkbox" name="selected[]" value="6">-->
+                        <input type="hidden" name="shipping_code[]" value="flat.flat">
+                    </td>
+                    <td class="text-center">{$list.id}</td>
+                    <td class="text-left">{$list.title}</td>
+                    <td class="text-left">
+                    {$list.description|getSubstr=0,33}
+                    </td>
+                                                         
+                                     
+                    <td class="text-center">
+                        <!-- <a  target="_blank" href="{:U('Home/Tourism/safetyInfo',array('id'=>$list['id']))}" class="btn btn-info" title="查看详情"><i class="fa fa-eye"></i></a> -->
+                        <a href="{:U('Admin/Tourism/addEditsafety',array('id'=>$list['id']))}" class="btn btn-primary" title="编辑"><i class="fa fa-pencil"></i></a>
+                       <a href="javascript:if(confirm('你确定要删除?')) location.href='{:U('Admin/Tourism/delsafety',array('act'=>del,'id'=>$list['id']))}'" class="btn btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+                        <!--  <a href="javascript:void(0);" onclick="ClearsafetyHtml('{$list[id]}')" class="btn btn-default" title="清除静态缓存页面"><i class="fa fa-fw fa-refresh"></i></a>
+                        <a href="javascript:void(0);" onclick="ClearsafetyThumb('{$list[id]}')" class="btn btn-default" title="清除缩略图缓存"><i class="glyphicon glyphicon-picture"></i></a> -->
+                    </td>                        
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="row">
+    <div class="col-sm-3 text-left"></div>
+    <div class="col-sm-9 text-right">{$page}</div>
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+  
+    /*
+     * 清除静态页面缓存
+     */
+    function ClearsafetyHtml(id)
+    {
+      $.ajax({
+        type:'GET',
+        url:"{:U('Admin/System/ClearsafetyHtml')}",
+        data:{id:id},
+        dataType:'json',
+        success:function(data){
+          layer.alert(data.msg, {icon: 2});                
+        }
+    });
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function ClearsafetyThumb(id)
+    {
+      $.ajax({
+        type:'GET',
+        url:"{:U('Admin/System/ClearsafetyThumb')}",
+        data:{id:id},
+        dataType:'json',
+        success:function(data){
+          layer.alert(data.msg, {icon: 2});                
+        }
+    });
+    }   
+</script>

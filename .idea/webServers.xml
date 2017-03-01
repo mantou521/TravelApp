@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="0c4c8740-51ce-46b3-b167-a73bd08b74b5" name="uucf" url="http://120.26.97.245">
+        <fileTransfer host="120.26.97.245" port="22" rootFolder="/home/wwwroot/cf_52cold_com" accessType="SFTP" password="dfc2dfe8df9bdf98df99df9edf9fdf9c" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

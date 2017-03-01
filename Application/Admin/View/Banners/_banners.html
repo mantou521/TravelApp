@@ -1,0 +1,348 @@
+<include file="Public/min-header"/>
+<!--以下是在线编辑器 代码 -->
+<script type="text/javascript">
+    /*
+	 * 在线编辑器相 关配置 js 
+	 *  参考 地址 http://fex.baidu.com/ueditor/
+	 */
+    window.UEDITOR_Admin_URL = "__ROOT__/Public/plugins/Ueditor/";
+    var URL_upload = "{$URL_upload}";
+    var URL_fileUp = "{$URL_fileUp}";
+    var URL_scrawlUp = "{$URL_scrawlUp}";
+    var URL_getRemoteImage = "{$URL_getRemoteImage}";
+    var URL_imageManager = "{$URL_imageManager}";
+    var URL_imageUp = "{$URL_imageUp}";
+    var URL_getMovie = "{$URL_getMovie}";
+    var URL_home = "{$URL_home}";
+</script>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/Public/plugins/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/Public/plugins/Ueditor/ueditor.all.min.js"> </script>
+ <script type="text/javascript" charset="utf-8" src="__ROOT__/Public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">  
+  
+    var editor;
+    $(function () {
+        //具体参数配置在  editor_config.js  中
+        var options = {
+            zIndex: 999,
+            initialFrameWidth: "95%", //初化宽度
+            initialFrameHeight: 400, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign'
+            , //允许的最大字符数 'fullscreen',
+            pasteplain: true, autoHeightEnabled: true,
+            autotypeset: {
+                mergeEmptyline: true,        //合并空行
+                removeClass: true,           //去掉冗余的class
+                removeEmptyline: false,      //去掉空行
+                textAlign: "left",           //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+                imageBlockLine: 'center',    //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+                pasteFilter: false,          //根据规则过滤没事粘贴进来的内容
+                clearFontSize: false,        //去掉所有的内嵌字号，使用编辑器默认的字号
+                clearFontFamily: false,      //去掉所有的内嵌字体，使用编辑器默认的字体
+                removeEmptyNode: false,      // 去掉空节点
+                                             //可以去掉的标签
+                removeTagNames: {"font": 1},
+                indent: false,               // 行首缩进
+                indentValue: '0em'           //行首缩进的大小
+            },
+        	toolbars: [
+                   ['fullscreen', 'source', '|', 'undo', 'redo',
+                       '|', 'bold', 'italic', 'underline', 'fontborder',
+                       'strikethrough', 'superscript', 'subscript',
+                       'removeformat', 'formatmatch', 'autotypeset',
+                       'blockquote', 'pasteplain', '|', 'forecolor',
+                       'backcolor', 'insertorderedlist',
+                       'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                       'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                       'customstyle', 'paragraph', 'fontfamily', 'fontsize',
+                       '|', 'directionalityltr', 'directionalityrtl',
+                       'indent', '|', 'justifyleft', 'justifycenter',
+                       'justifyright', 'justifyjustify', '|', 'touppercase',
+                       'tolowercase', '|', 'link', 'unlink', 'anchor', '|',
+                       'imagenone', 'imageleft', 'imageright', 'imagecenter',
+                       '|', 'insertimage', 'emotion', 'insertvideo',
+                       'attachment', 'map', 'gmap', 'insertframe',
+                       'insertcode', 'webapp', 'pagebreak', 'template',
+                       'background', '|', 'horizontal', 'date', 'time',
+                       'spechars', 'wordimage', '|',
+                       'inserttable', 'deletetable',
+                       'insertparagraphbeforetable', 'insertrow', 'deleterow',
+                       'insertcol', 'deletecol', 'mergecells', 'mergeright',
+                       'mergedown', 'splittocells', 'splittorows',
+                       'splittocols', '|', 'print', 'preview', 'searchreplace']
+               ]
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("banners_content");  //  指定 textarea 的  id 为 banners_content
+
+    }); 
+</script>
+<!--以上是在线编辑器 代码  end-->
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            	<a href="javascript:;" class="btn btn-default" data-url="http://www.tp-shop.cn/Doc/Index/article/id/1007/developer/user.html" onclick="get_help(this)"><i class="fa fa-question-circle"></i> 帮助</a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i> Banner</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_tongyong" data-toggle="tab">通用信息</a></li>
+<!--                        <li><a href="#tab_banners_desc" data-toggle="tab">描述信息</a></li>-->
+                        <li><a href="#tab_banners_images" data-toggle="tab">商品相册</a></li>
+                        <!-- <li><a href="#tab_banners_spec" data-toggle="tab">商品规格</a></li>                         -->
+                        <!-- <li><a href="#tab_banners_attr" data-toggle="tab">商品属性</a></li>                         -->
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="addEditbannersForm">
+                    
+                        <!--通用信息-->
+                    <div class="tab-content">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>名称:</td>
+                                    <td>
+                                        <input type="text" value="{$bannersInfo.banners_name}" name="banners_name" class="form-control" style="width:350px;"/>
+                                        <span id="err_banners_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>简介:</td>
+                                    <td>
+	                                    <textarea rows="3" cols="50" name="banners_remark">{$bannersInfo.banners_remark}</textarea>
+                                        <span id="err_banners_remark" style="color:#F00; display:none;"></span>
+                                         
+                                    </td>                                                                       
+                                </tr>
+                                
+                                <tr>
+                                    <td>位置:</td>
+                                    <td>
+                                        <select name="local" id="" class="form-control" style="width:250px;">
+                                            <option <?php if($bannersInfo['local'] == 0) {?> selected="selected" <?php } ?> value="0">请选择Banner位置</option>
+                                            <option <?php if($bannersInfo['local'] == 1) {?> selected="selected" <?php } ?> value="1">UU财富首页</option>
+                                            <option <?php if($bannersInfo['local'] == 2) {?> selected="selected" <?php } ?> value="2">游换购首页</option>
+                                            <option <?php if($bannersInfo['local'] == 3) {?> selected="selected" <?php } ?> value="3">游换购图层1</option>
+                                            <option <?php if($bannersInfo['local'] == 4) {?> selected="selected" <?php } ?> value="4">游换购图层2</option>
+                                            <option <?php if($bannersInfo['local'] == 5) {?> selected="selected" <?php } ?> value="5">游邮册首页</option>
+                                            <option <?php if($bannersInfo['local'] == 6) {?> selected="selected" <?php } ?> value="6">U旅行首页</option>
+                                            <option <?php if($bannersInfo['local'] == 7) {?> selected="selected" <?php } ?> value="7">旅游路线界面</option>
+                                            <option <?php if($bannersInfo['local'] == 8) {?> selected="selected" <?php } ?> value="8">U企划首页</option>
+                                            <option <?php if($bannersInfo['local'] == 9) {?> selected="selected" <?php } ?> value="9">专家团队</option>
+                                            <option <?php if($bannersInfo['local'] == 10) {?> selected="selected" <?php } ?> value="10">企划实战</option>
+                                            <option <?php if($bannersInfo['local'] == 11) {?> selected="selected" <?php } ?> value="11">U创客首页</option>
+                                            <option <?php if($bannersInfo['local'] == 12) {?> selected="selected" <?php } ?> value="12">U创客-创业新闻</option>
+                                        </select>
+                                         
+                                    </td>                                                                       
+                                </tr>                    
+                                                      
+                                      
+                                <tr>
+                                    <td>关键词:</td>
+                                    <td>
+                                        <input type="text" class="form-control" style="width:350px;" value="{$bannersInfo.keywords}" name="keywords"/>用空格分隔
+                                        <span id="err_keywords" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>                                    
+                                <tr>
+                                    <td>详情描述:</td>
+                                    <td width="85%">
+										<textarea class="span12 ckeditor" id="banners_content" name="banners_content" title="">{$bannersInfo.banners_content}</textarea>
+                                        <span id="err_banners_content" style="color:#F00; display:none;"></span>                                         
+                                    </td>                                                                       
+                                </tr>   
+                                </tbody>                                
+                                </table>
+                        </div>
+                         <!--其他信息-->
+                         
+                        <!-- 商品相册-->
+                        <div class="tab-pane" id="tab_banners_images">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>                                    
+                                    <td>                                    
+                                    <foreach name="bannersImages" item="vo" key="k" >
+                                        <div style="width:100px; text-align:center; margin: 5px; display:inline-block;" class="banners_xc">
+                                            <input type="hidden" value="{$vo['image_url']}" name="banners_images[]">
+                                            <a onclick="" href="{$vo['image_url']}" target="_blank"><img width="100" height="100" src="{$vo['image_url']}"></a>
+                                            <br>
+                                            <a href="javascript:void(0)" onclick="ClearPicArr2(this,'{$vo['image_url']}')">删除</a>
+                                        </div>
+                                    </foreach>
+                                    
+                                        <div class="banners_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">
+                                            <input type="hidden" name="banners_images[]" value="" />
+                                            <a href="javascript:void(0);" onclick="GetUploadify(10,'','banners','call_back2');"><img src="/Public/images/add-button.jpg" width="100" height="100" /></a>
+                                            <br/>
+                                            <a href="javascript:void(0)">&nbsp;&nbsp;</a>
+                                        </div>                                        
+                                    </td>
+                                </tr>                                              
+                                </tbody>
+                            </table>
+                        </div>
+                         <!--商品相册--> 
+   
+                        <!-- 商品规格-->
+                        
+                        <!-- 商品属性-->                                
+                    </div>              
+                    <div class="pull-right">
+                        <input type="hidden" name="banners_id" value="{$bannersInfo.banners_id}">
+                        <button class="btn btn-primary" onclick="ajax_submit_form('addEditbannersForm','{:U('banners/addEditbanners?is_ajax=1')}');" title="" data-toggle="tooltip" type="button" data-original-title="保存">保存</button>
+                    </div>
+			    </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+<script>
+    /*
+     * 以下是图片上传方法
+     */
+    // 上传商品图片成功回调函数
+    function call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+    	$("#original_img2").attr('href', fileurl_tmp);
+    }
+ 
+    // 上传商品相册回调函数
+    function call_back2(paths){
+        
+        var  last_div = $(".banners_xc:last").prop("outerHTML");	
+        for (i=0;i<paths.length ;i++ )
+        {                    
+            $(".banners_xc:eq(0)").before(last_div);	// 插入一个 新图片
+                $(".banners_xc:eq(0)").find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            $(".banners_xc:eq(0)").find('img').attr('src',paths[i]);// 修改他的图片路径
+                $(".banners_xc:eq(0)").find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+            $(".banners_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+        } 			   
+    }
+    /*
+     * 上传之后删除组图input     
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path)
+    {
+    	$.ajax({
+                    type:'GET',
+                    url:"{:U('Admin/Uploadify/delupload')}",
+                    data:{action:"del", filename:path},
+                    success:function(){
+                           $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片				 
+                    }
+		});
+		// 删除数据库记录
+    	$.ajax({
+                    type:'GET',
+                    url:"{:U('Admin/banners/del_banners_images')}",
+                    data:{filename:path},
+                    success:function(){
+                          //		 
+                    }
+		});		
+    }
+ 
+
+
+/** 以下 商品属性相关 js*/
+$(document).ready(function(){
+	
+    // 商品类型切换时 ajax 调用  返回不同的属性输入框
+    $("#banners_type").change(function(){        
+        var banners_id = $("input[name='banners_id']").val();
+        var type_id = $(this).val();
+            $.ajax({
+                    type:'GET',
+                    data:{banners_id:banners_id,type_id:type_id}, 
+                    url:"/index.php?s=admin/banners/ajaxGetAttrInput",
+                    success:function(data){                            
+                            $("#banners_attr_table tr:gt(0)").remove()
+                            $("#banners_attr_table").append(data);
+                    }        
+            });			                
+    });
+	// 触发商品类型
+	$("#banners_type").trigger('change');
+});
+ 
+
+// 属性输入框的加减事件
+function addAttr(a)
+{
+	var attr = $(a).parent().parent().prop("outerHTML");	
+	attr = attr.replace('addAttr','delAttr').replace('+','-');	
+	$(a).parent().parent().after(attr);
+}
+// 属性输入框的加减事件
+function delAttr(a)
+{
+   $(a).parent().parent().remove();
+}
+ 
+
+/** 以下 商品规格相关 js*/
+$(document).ready(function(){
+	
+    // 商品类型切换时 ajax 调用  返回不同的属性输入框
+    $("#spec_type").change(function(){        
+        var banners_id = '{$bannersInfo.banners_id}';
+        var spec_type = $(this).val();
+            $.ajax({
+                    type:'GET',
+                    data:{banners_id:banners_id,spec_type:spec_type}, 
+                    url:"{:U('admin/banners/ajaxGetSpecSelect')}",
+                    success:function(data){                            
+                           $("#ajax_spec_data").html('')
+                           $("#ajax_spec_data").append(data);
+						   //alert('132');
+						   ajaxGetSpecInput();	// 触发完  马上处罚 规格输入框
+                    }
+            });			                
+    });
+	// 触发商品规格
+	$("#spec_type").trigger('change'); 
+});
+
+/** 以下是编辑时默认选中某个商品分类*/
+$(document).ready(function(){
+
+	<if condition="$level_cat['2'] gt 0">
+		 // 商品分类第二个下拉菜单
+		 get_category('{$level_cat[1]}','cat_id_2','{$level_cat[2]}');	
+	</if>
+	<if condition="$level_cat['3'] gt 0">
+		// 商品分类第二个下拉菜单
+		 get_category('{$level_cat[2]}','cat_id_3','{$level_cat[3]}');	 
+	</if>
+
+    //  扩展分类
+	<if condition="$level_cat2['2'] gt 0">
+		 // 商品分类第二个下拉菜单
+		 get_category('{$level_cat2[1]}','extend_cat_id_2','{$level_cat2[2]}');	
+	</if>
+	<if condition="$level_cat2['3'] gt 0">
+		// 商品分类第二个下拉菜单
+		 get_category('{$level_cat2[2]}','extend_cat_id_3','{$level_cat2[3]}');	 
+	</if>
+
+});
+
+</script>
+</body>
+</html>

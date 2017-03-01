@@ -1,0 +1,536 @@
+<include file="Public/min-header"/>
+<!--以下是在线编辑器 代码 -->
+<script type="text/javascript">
+    /*
+	 * 在线编辑器相 关配置 js 
+	 *  参考 地址 http://fex.baidu.com/ueditor/
+	 */
+    window.UEDITOR_Admin_URL = "__ROOT__/Public/plugins/Ueditor/";
+    var URL_upload = "{$URL_upload}";
+    var URL_fileUp = "{$URL_fileUp}";
+    var URL_scrawlUp = "{$URL_scrawlUp}";
+    var URL_getRemoteImage = "{$URL_getRemoteImage}";
+    var URL_imageManager = "{$URL_imageManager}";
+    var URL_imageUp = "{$URL_imageUp}";
+    var URL_getMovie = "{$URL_getMovie}";
+    var URL_home = "{$URL_home}";
+</script>
+<script type="text/javascript">
+</script>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/Public/plugins/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/Public/plugins/Ueditor/ueditor.all.min.js"> </script>
+ <script type="text/javascript" charset="utf-8" src="__ROOT__/Public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">  
+  
+    var editor;
+    $(function () {
+        //具体参数配置在  editor_config.js  中
+        var options = {
+            zIndex: 999,
+            initialFrameWidth: "95%", //初化宽度
+            initialFrameHeight: 400, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign'
+            , //允许的最大字符数 'fullscreen',
+            pasteplain: true, autoHeightEnabled: true,
+            autotypeset: {
+                mergeEmptyline: true,        //合并空行
+                removeClass: true,           //去掉冗余的class
+                removeEmptyline: false,      //去掉空行
+                textAlign: "left",           //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+                imageBlockLine: 'center',    //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+                pasteFilter: false,          //根据规则过滤没事粘贴进来的内容
+                clearFontSize: false,        //去掉所有的内嵌字号，使用编辑器默认的字号
+                clearFontFamily: false,      //去掉所有的内嵌字体，使用编辑器默认的字体
+                removeEmptyNode: false,      // 去掉空节点
+                                             //可以去掉的标签
+                removeTagNames: {"font": 1},
+                indent: false,               // 行首缩进
+                indentValue: '0em'           //行首缩进的大小
+            },
+        	toolbars: [
+                   ['fullscreen', 'source', '|', 'undo', 'redo',
+                       '|', 'bold', 'italic', 'underline', 'fontborder',
+                       'strikethrough', 'superscript', 'subscript',
+                       'removeformat', 'formatmatch', 'autotypeset',
+                       'blockquote', 'pasteplain', '|', 'forecolor',
+                       'backcolor', 'insertorderedlist',
+                       'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                       'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                       'customstyle', 'paragraph', 'fontfamily', 'fontsize',
+                       '|', 'directionalityltr', 'directionalityrtl',
+                       'indent', '|', 'justifyleft', 'justifycenter',
+                       'justifyright', 'justifyjustify', '|', 'touppercase',
+                       'tolowercase', '|', 'link', 'unlink', 'anchor', '|',
+                       'imagenone', 'imageleft', 'imageright', 'imagecenter',
+                       '|', 'insertimage', 'emotion', 'insertvideo',
+                       'attachment', 'map', 'gmap', 'insertframe',
+                       'insertcode', 'webapp', 'pagebreak', 'template',
+                       'background', '|', 'horizontal', 'date', 'time',
+                       'spechars', 'wordimage', '|',
+                       'inserttable', 'deletetable',
+                       'insertparagraphbeforetable', 'insertrow', 'deleterow',
+                       'insertcol', 'deletecol', 'mergecells', 'mergeright',
+                       'mergedown', 'splittocells', 'splittorows',
+                       'splittocols', '|', 'print', 'preview', 'searchreplace']
+               ]
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("books_content");  //  指定 textarea 的  id 为 books_content
+
+    }); 
+</script>
+<!--以上是在线编辑器 代码  end-->
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            	<a href="javascript:;" class="btn btn-default" data-url="http://www.tp-shop.cn/Doc/Index/article/id/1007/developer/user.html" onclick="get_help(this)"><i class="fa fa-question-circle"></i> 帮助</a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>商品详情</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_tongyong" data-toggle="tab">通用信息</a></li>
+<!--                        <li><a href="#tab_books_desc" data-toggle="tab">描述信息</a></li>-->
+                        <li><a href="#tab_books_images" data-toggle="tab">商品相册</a></li>
+                        <li><a href="#tab_books_spec" data-toggle="tab">UU册编号</a></li>                        
+                        <!-- <li><a href="#tab_books_attr" data-toggle="tab">商品属性</a></li>                         -->
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="addEditbooksForm">
+                    
+                        <!--通用信息-->
+                    <div class="tab-content">                 	  
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>商品名称:</td>
+                                    <td>
+                                        <input type="text" value="{$booksInfo.books_name}" name="books_name" class="form-control" style="width:350px;"/>
+                                        <span id="err_books_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>商品简介:</td>
+                                    <td>
+	                                    <textarea rows="3" cols="50" name="books_remark">{$booksInfo.books_remark}</textarea>
+                                        <span id="err_books_remark" style="color:#F00; display:none;"></span>
+                                         
+                                    </td>                                                                       
+                                </tr>
+                                <tr>
+                                    <td>商品货号</td>
+                                    <td>                                                                               
+                                        <input type="text" value="{$booksInfo.books_sn}" name="books_sn" class="form-control" style="width:350px;"/>
+                                        <span id="err_books_sn" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                
+                                 <tr>
+                                    <td>关键字</td>
+                                    <td>                                                                               
+                                        <input type="text" value="{$booksInfo.keywords}" name="keywords" class="form-control" style="width:350px;"/>
+                                    </td>
+                                </tr>                    
+                                                          
+                            
+                                <tr>
+                                    <td>本店售价:</td>
+                                    <td>
+                                        <input type="text" value="{$booksInfo.shop_price}" name="shop_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_shop_price" style="color:#F00; display:none;"></span>					                                        
+                                    </td>
+                                </tr>  
+                                <!-- <tr>
+                                    <td>市场价:</td>
+                                    <td>
+                                        <input type="text" value="{$booksInfo.market_price}" name="market_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_market_price" style="color:#F00; display:none;"></span>					                                        
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td>成本价:</td>
+                                    <td>
+                                        <input type="text" value="{$booksInfo.cost_price}" name="cost_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_cost_price" style="color:#F00; display:none"></span>					                                        
+                                    </td>
+                                </tr>       
+                                <tr>
+                                    <td>佣金:</td>
+                                    <td>
+                                        <input type="text" value="{$booksInfo.commission}" name="commission" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        用于分销的分成金额
+                                    </td>
+                                </tr>           -->                        
+                                <tr>
+                                    <td>上传商品图片:</td>
+                                    <td>
+                                        <input type="button" value="上传图片"  onclick="GetUploadify(1,'','books','call_back');"/>
+                                        <input type="text" class="input-sm"  name="original_img" id="original_img" value="{$booksInfo.original_img}"/>
+                                        <if condition="$booksInfo['original_img'] neq null">
+                                            &nbsp;&nbsp;
+                                            <a target="_blank" href="{$booksInfo.original_img}" id="original_img2">
+                                                <img width="25" height="25" src="/Public/images/image_icon.jpg">
+                                            </a>
+                                        </if>
+                                        <span id="err_original_img" style="color:#F00; display:none;"></span>					                                        
+                                    </td>
+                                </tr>                                 
+                                <tr>
+                                    <td>商品重量:</td>
+                                    <td>
+                                        <input type="text" class="form-control" style="width:150px;" value="{$booksInfo.weight}" name="weight" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        &nbsp;克 (以克为单位)                                        
+                                        <span id="err_weight" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>是否包邮:</td>
+                                    <td>
+                                        是:<input type="radio" <if condition="$booksInfo[is_free_shipping] eq 1">checked="checked"</if> value="1" name="is_free_shipping" /> 
+                                        否:<input type="radio" <if condition="$booksInfo[is_free_shipping] eq 0">checked="checked"</if> value="0" name="is_free_shipping" /> 
+                                    </td>
+                                </tr>      -->  
+                                    
+                                    <tr>
+                                    <td>邮费:</td>
+                                    <td>
+                                        <input type="text" value="{$booksInfo.shipping_price}" name="shipping_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_cost_price" style="color:#F00; display:none"></span>                                                          
+                                    </td>
+                                </tr>       
+
+                                <tr>
+                                    <td>库存数量:</td>
+                                    <td>
+                                        <if condition="$booksInfo[books_id] gt 0">
+                                            <input type="text" value="{$booksInfo.store_count}" class="form-control" style="width:150px;" name="store_count" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <else />
+                                            <input type="text" value="{$tpshop_config[basic_default_storage]}" class="form-control" style="width:150px;" name="store_count" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />                                         
+                                        </if>
+                                        
+                                        <span id="err_store_count" style="color:#F00; display:none;"></span>					                                        
+                                    </td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>赠送积分:</td>
+                                    <td>
+                                        <input type="text" class="form-control" style="width:150px;" value="{$booksInfo.give_integral}" name="give_integral" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_give_integral" style="color:#F00; display:none;"></span>					                                        
+                                    </td>
+                                </tr>         -->                         
+                                <!--
+                                <tr>
+                                    <td>设置:</td>
+                                    <td>
+                                    	<input type="checkbox" checked="checked" value="{$booksInfo.is_on_sale}" name="is_on_sale"/> 上架&nbsp;&nbsp;
+	                                <input type="checkbox" checked="checked" value="{$booksInfo.is_free_shipping}" name="is_free_shipping"/> 包邮&nbsp;&nbsp;
+                                        <input type="checkbox" checked="checked" value="{$booksInfo.is_recommend}" name="is_recommend"/>推荐&nbsp;&nbsp;
+                                        <input type="checkbox" checked="checked" value="{$booksInfo.is_new}" name="is_new"/>新品&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                -->
+                                <tr>
+                                    <td>商品关键词:</td>
+                                    <td>
+                                        <input type="text" class="form-control" style="width:350px;" value="{$booksInfo.keywords}" name="keywords"/>用空格分隔
+                                        <span id="err_keywords" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>                                    
+                                <tr>
+                                    <td>商品详情描述:</td>
+                                    <td width="85%">
+										<textarea class="span12 ckeditor" id="books_content" name="books_content" title="">{$booksInfo.books_content}</textarea>
+                                        <span id="err_books_content" style="color:#F00; display:none;"></span>                                         
+                                    </td>                                                                       
+                                </tr>   
+                                </tbody>                                
+                                </table>
+
+                            <!-- 下一步-->
+                            <div class="pull-right pull_next">
+                                <button class="btn btn-primary" type="button" data-original-title="下一步">下一步</button>
+                            </div>
+                        </div>
+                         <!--其他信息-->
+                         
+                        <!-- 商品相册-->
+                        <div class="tab-pane" id="tab_books_images">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>                                    
+                                    <td>                                    
+                                    <foreach name="booksImages" item="vo" key="k" >
+                                        <div style="width:100px; text-align:center; margin: 5px; display:inline-block;" class="books_xc">
+                                            <input type="hidden" value="{$vo['image_url']}" name="books_images[]">
+                                            <a onclick="" href="{$vo['image_url']}" target="_blank"><img width="100" height="100" src="{$vo['image_url']}"></a>
+                                            <br>
+                                            <a href="javascript:void(0)" onclick="ClearPicArr2(this,'{$vo['image_url']}')">删除</a>
+                                        </div>
+                                    </foreach>
+                                    
+                                        <div class="books_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">
+                                            <input type="hidden" name="books_images[]" value="" />
+                                            <a href="javascript:void(0);" onclick="GetUploadify(10,'','books','call_back2');"><img src="/Public/images/add-button.jpg" width="100" height="100" /></a>
+                                            <br/>
+                                            <a href="javascript:void(0)">&nbsp;&nbsp;</a>
+                                        </div>                                        
+                                    </td>
+                                </tr>                                              
+                                </tbody>
+                            </table>
+
+                            <!-- 下一步-->
+                            <div class="pull-right pull_next">
+                                <button class="btn btn-primary" type="button" data-original-title="下一步">下一步</button>
+                            </div>
+                        </div>
+                         <!--商品相册--> 
+<style type="text/css">
+    #tab_books_spec{margin-top: 20px;}
+</style>
+                        <!-- 商品规格-->
+                        <div class="tab-pane" id="tab_books_spec">
+                            <?php if($message != "") {?>
+                                <div class="form-group">
+                                <div class="form-box">
+                                <volist name="message" id="stp">
+                                    <div class="form-time">
+                                       <label for="text" style="height:30px;text-align:right;line-height:34px;" class="col-sm-1">UU册编号: </label>
+                                        <div class="col-sm-2">
+
+                                            <div class="input-prepend input-group">
+                                                <input type="text" style="width:260px;height:32px;text-indent:5px;" class="form-control-1" name="cardnum[]"  value="{$stp.cardnum}" placeholder="UU册编号"  onfocus="if(this.placeholder == 'UU册编号') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = 'UU册编号'">
+                                            </div>                        
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span style="height: 30px; text-align:right; line-height:34px; font-weight: 700;">惠民卡账号：</span>
+                                            <input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="card[]"  value="{$stp.card}" placeholder="惠民卡账号" onfocus="if(this.placeholder == '惠民卡账号') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = '惠民卡账号'">
+
+                                            <span style="height: 30px; text-align:right; line-height:34px; font-weight: 700;">密码：</span><input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="pass[]"  value="{$stp.pass}" placeholder="密码"  onfocus="if(this.placeholder == '密码') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = '密码'">
+                                        </div>
+                                      <div class="col-sm-1 form-add">添加</div>
+                                      <div class="col-sm-1 form-removes">删除</div>
+                                    </div>
+                                </volist>
+                                </div>
+                                </div> 
+                            <?php }else{?>
+                              <div class="form-group">
+                                  <div class="form-box">
+                                    <div class="form-time">
+                                       <label for="text" style="height:30px;text-align:right;line-height:34px;" class="col-sm-1">UU册编号:</label>
+                                        <div class="col-sm-2">
+                                            <div class="input-prepend input-group">
+                                                <input type="text" style="width:260px;height:32px;text-indent:5px;" class="form-control-1" name="cardnum[]"  value="" placeholder="UU册编号"  onfocus="if(this.placeholder == 'UU册编号') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = 'UU册编号'">
+                                            </div>                        
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span style="height: 30px; text-align:right; line-height:34px; font-weight: 700;">惠民卡账号：</span>
+                                            <input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="card[]"  value="" placeholder="惠民卡账号" onfocus="if(this.placeholder == '惠民卡账号') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = '惠民卡账号'">
+
+                                            <span style="height: 30px; text-align:right; line-height:34px; font-weight: 700;">密码：</span><input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="pass[]"  value="" placeholder="密码"  onfocus="if(this.placeholder == '密码') this.placeholder = ''" onblur="if(this.placeholder =='') this.placeholder = '密码'">
+                                        </div>
+                                        <div class="col-sm-1 form-add">添加</div>
+                                    </div>
+                                </div>
+                            </div> 
+                        <?php } ?>
+<style>
+  .form-time{overflow: hidden;margin-bottom: 15px;}
+  .form-add,.form-remove,.form-removes{ height: 30px; width: 60px;background: #00c0ef;line-height: 30px;border-radius: 5px;cursor: pointer;margin-right: 5px;}
+  .nums{line-height: 36px;}
+</style>                 
+<script>
+  $('.form-add').click(function() {
+    add();
+  });
+  function add(){
+    $('.form-box').append('<div class="form-time"><label for="text" style="height:30px;text-align:right;line-height:34px;" class="col-sm-1">UU册编号:</label><div class="col-sm-2"><div class="input-prepend input-group"><input type="text" style="width:260px;height:32px;text-indent:5px;" class="form-control-1" name="cardnum[]"  value="" placeholder="UU册编号"></div></div> <div class="col-sm-4"><span style="height: 30px; text-align:right; line-height:34px; font-weight: 700;">惠民卡账号：</span> <input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="card[]"  value="" placeholder="惠民卡账号" ><span style="height: 30px; text-align:right; line-height:34px; font-weight: 700;"> 密码：</span><input type="text" style="height:32px;text-indent:5px;" class="form-control-2" name="pass[]"  value="" placeholder="密码"  ></div> <div class="col-sm-1 form-remove">删除</div></div>');
+      remove();
+  }
+  function remove(){
+    $('.form-remove').click(function(){
+      $(this).parents('.form-time').remove();
+    });
+  }
+
+  $('.form-removes').click(function() {
+    var leng = $('.form-removes').length;
+    if(leng>=2){
+      $(this).parents('.form-time').remove();
+    }else{
+      alert('刀下留人:(')
+    }
+  });
+</script>
+                            <!-- 保存-->
+                            <div class="pull-right">
+                                <input type="hidden" name="books_id" value="{$booksInfo.books_id}">
+                                <button class="btn btn-primary" onclick="ajax_submit_form('addEditbooksForm','{:U('books/addEditbooks?is_ajax=1')}');" title="" data-toggle="tooltip" type="button" data-original-title="保存">保存</button>
+                            </div>
+                    </div>
+                        <!-- 商品属性-->                                
+                    </div>
+
+			    </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+<script>
+    //下一步
+    $('.pull_next').click(function(){
+        var cur=$(this).parent().index();
+        var next=$(this).parent().index()-(-1);
+        $(this).parent().removeClass('active');
+        $('.tab-pane').eq(next).addClass('active');
+        $('.nav.nav-tabs li').eq(cur).removeClass('active');
+        $('.nav.nav-tabs li').eq(next).addClass('active');
+    });
+
+    /*
+     * 以下是图片上传方法
+     */
+    // 上传商品图片成功回调函数
+    function call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+    	$("#original_img2").attr('href', fileurl_tmp);
+    }
+ 
+    // 上传商品相册回调函数
+    function call_back2(paths){
+        
+        var  last_div = $(".books_xc:last").prop("outerHTML");	
+        for (i=0;i<paths.length ;i++ )
+        {                    
+            $(".books_xc:eq(0)").before(last_div);	// 插入一个 新图片
+                $(".books_xc:eq(0)").find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            $(".books_xc:eq(0)").find('img').attr('src',paths[i]);// 修改他的图片路径
+                $(".books_xc:eq(0)").find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+            $(".books_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+        } 			   
+    }
+    /*
+     * 上传之后删除组图input     
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path)
+    {
+    	$.ajax({
+                    type:'GET',
+                    url:"{:U('Admin/Uploadify/delupload')}",
+                    data:{action:"del", filename:path},
+                    success:function(){
+                           $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片				 
+                    }
+		});
+		// 删除数据库记录
+    	$.ajax({
+                    type:'GET',
+                    url:"{:U('Admin/books/del_books_images')}",
+                    data:{filename:path},
+                    success:function(){
+                          //		 
+                    }
+		});		
+    }
+ 
+
+
+/** 以下 商品属性相关 js*/
+$(document).ready(function(){
+	
+    // 商品类型切换时 ajax 调用  返回不同的属性输入框
+    $("#books_type").change(function(){        
+        var books_id = $("input[name='books_id']").val();
+        var type_id = $(this).val();
+            $.ajax({
+                    type:'GET',
+                    data:{books_id:books_id,type_id:type_id}, 
+                    url:"/index.php?s=admin/books/ajaxGetAttrInput",
+                    success:function(data){                            
+                            $("#books_attr_table tr:gt(0)").remove()
+                            $("#books_attr_table").append(data);
+                    }        
+            });			                
+    });
+	// 触发商品类型
+	$("#books_type").trigger('change');
+});
+ 
+
+// 属性输入框的加减事件
+function addAttr(a)
+{
+	var attr = $(a).parent().parent().prop("outerHTML");	
+	attr = attr.replace('addAttr','delAttr').replace('+','-');	
+	$(a).parent().parent().after(attr);
+}
+// 属性输入框的加减事件
+function delAttr(a)
+{
+   $(a).parent().parent().remove();
+}
+ 
+
+/** 以下 商品规格相关 js*/
+$(document).ready(function(){
+	
+    // 商品类型切换时 ajax 调用  返回不同的属性输入框
+    $("#spec_type").change(function(){        
+        var books_id = '{$booksInfo.books_id}';
+        var spec_type = $(this).val();
+            $.ajax({
+                    type:'GET',
+                    data:{books_id:books_id,spec_type:spec_type}, 
+                    url:"{:U('admin/books/ajaxGetSpecSelect')}",
+                    success:function(data){                            
+                           $("#ajax_spec_data").html('')
+                           $("#ajax_spec_data").append(data);
+						   //alert('132');
+						   ajaxGetSpecInput();	// 触发完  马上处罚 规格输入框
+                    }
+            });			                
+    });
+	// 触发商品规格
+	$("#spec_type").trigger('change'); 
+});
+
+/** 以下是编辑时默认选中某个商品分类*/
+$(document).ready(function(){
+
+	<if condition="$level_cat['2'] gt 0">
+		 // 商品分类第二个下拉菜单
+		 get_category('{$level_cat[1]}','cat_id_2','{$level_cat[2]}');	
+	</if>
+	<if condition="$level_cat['3'] gt 0">
+		// 商品分类第二个下拉菜单
+		 get_category('{$level_cat[2]}','cat_id_3','{$level_cat[3]}');	 
+	</if>
+
+    //  扩展分类
+	<if condition="$level_cat2['2'] gt 0">
+		 // 商品分类第二个下拉菜单
+		 get_category('{$level_cat2[1]}','extend_cat_id_2','{$level_cat2[2]}');	
+	</if>
+	<if condition="$level_cat2['3'] gt 0">
+		// 商品分类第二个下拉菜单
+		 get_category('{$level_cat2[2]}','extend_cat_id_3','{$level_cat2[3]}');	 
+	</if>
+
+});
+
+</script>
+</body>
+</html>

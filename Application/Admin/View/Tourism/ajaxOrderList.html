@@ -1,0 +1,147 @@
+<form method="post" enctype="multipart/form-data" target="_blank" id="form-order">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td style="width: 1px;" class="text-center">
+                <!--
+                    <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                -->    
+                </td>                
+                <td class="text-center">
+                    <a href="javascript:sort('order_id');">ID</a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('order_name');">订单号</a>
+                </td>
+                
+                <td class="text-left" style="text-align: center;">
+                    <a href="javascript:sort('');">联系人</a>
+                </td>    
+                <td class="text-left">
+                    <a href="javascript:sort('');">金额</a>
+                </td>  
+                <td class="text-left">
+                    <a href="javascript:sort('');">支付状态</a>
+                </td>   
+                <td class="text-left">
+                    <a href="javascript:sort('');">线路</a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('');">出行时间</a>
+                </td>             
+                <td class="text-left">
+                    <a href="javascript:sort('');">是否出行</a>
+                </td> 
+                <td class="text-left">
+                    <a href="javascript:sort('');">下单时间</a>
+                </td> 
+                                 
+                <!-- <td class="text-center">操作</td> -->
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="orderList" id="list">
+                <tr>
+                    <td class="text-center">
+                       <!-- <input type="checkbox" name="selected[]" value="6">-->
+                        <input type="hidden" name="shipping_code[]" value="flat.flat">
+                    </td>
+                    <td class="text-center">{$list.order_id}</td>
+                    <td class="text-left">{$list.order_sn}</td>
+                    <td class="text-left">
+                        <?php foreach ($list['message'] as $m => $mes) {
+                            echo "<p style='text-align:center;'>".$mes['username'].":".$mes['tel']."</p>";
+                        } ?>
+                    </td>
+                    <td class="text-left">{$list.order_amount}</td>
+                    <td class="text-left">
+                        <?php if($list['pay_status'] == "0") {?>
+                            未支付
+                        <?php }elseif($list['pay_status'] == "1"){?>
+                            已支付
+                        <?php  }?>
+                    </td>
+                    <td class="text-left">
+                    <?php if($list['shop'] == "3") {?>
+                        <a href="/index.php?s=/Admin/Tourism/lines/act/edit/lines_id/<?php echo $list['id'] ?>">
+                        <?php echo $list['title']; ?>
+                        </a>
+                    <?php } ?>
+                    <?php if($list['shop'] == "4") {?>
+                        <a href="/index.php?s=/Admin/Tourism/benefits/act/edit/benefits_id/<?php echo $list['id'] ?>">
+                        <?php echo $list['title']; ?>
+                        </a>
+                    <?php } ?>
+                    <?php if($list['shop'] == "5") {?>
+                        <a href="/index.php?s=/Admin/Tourism/addEdittogethers/id/<?php echo $list['id'] ?>">
+                        <?php echo $list['title']; ?>
+                        </a>
+                    <?php } ?>
+                    </td>
+                    <td class="text-left"><?php echo date("Y-m-d H:i:s",$list['start_time']);?></td>
+                    <td class="text-left">
+                         <?php if($list['go'] == "0") {?>
+                            未出行
+                        <?php }elseif($list['go'] == "1"){?>
+                            已出行
+                        <?php  }?>
+                    </td>
+                    <td class="text-left"><?php echo date("Y-m-d H:i:s",$list['add_time']);?></td>
+                                                         
+                                     
+                    <!-- <td class="text-center">
+                        <a  target="_blank" href="{:U('Home/Tourism/orderInfo',array('id'=>$list['order_id']))}" class="btn btn-info" title="查看详情"><i class="fa fa-eye"></i></a>
+                        <a href="{:U('Admin/Tourism/addEditorder',array('id'=>$list['order_id']))}" class="btn btn-primary" title="编辑"><i class="fa fa-pencil"></i></a>
+                       <a href="javascript:if(confirm('你确定要删除?')) location.href='{:U('Admin/Tourism/delorder',array('act'=>del,'id'=>$list['order_id']))}'" class="btn btn-danger" title="删除"><i class="fa fa-trash-o"></i></a> 
+                        <a href="javascript:void(0);" onclick="ClearorderHtml('{$list[order_id]}')" class="btn btn-default" title="清除静态缓存页面"><i class="fa fa-fw fa-refresh"></i></a>
+                        <a href="javascript:void(0);" onclick="ClearorderThumb('{$list[order_id]}')" class="btn btn-default" title="清除缩略图缓存"><i class="glyphicon glyphicon-picture"></i></a> 
+                    </td>                         -->
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="row">
+    <div class="col-sm-3 text-left"></div>
+    <div class="col-sm-9 text-right">{$page}</div>
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+  
+    /*
+     * 清除静态页面缓存
+     */
+    function ClearorderHtml(order_id)
+    {
+      $.ajax({
+        type:'GET',
+        url:"{:U('Admin/System/ClearorderHtml')}",
+        data:{order_id:order_id},
+        dataType:'json',
+        success:function(data){
+          layer.alert(data.msg, {icon: 2});                
+        }
+    });
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function ClearorderThumb(order_id)
+    {
+      $.ajax({
+        type:'GET',
+        url:"{:U('Admin/System/ClearorderThumb')}",
+        data:{order_id:order_id},
+        dataType:'json',
+        success:function(data){
+          layer.alert(data.msg, {icon: 2});                
+        }
+    });
+    }   
+</script>

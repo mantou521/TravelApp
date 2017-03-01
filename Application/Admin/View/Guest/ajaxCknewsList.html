@@ -1,0 +1,77 @@
+<form method="post" enctype="multipart/form-data" target="_blank" id="form-order">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                           <tr role="row">
+                               <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 294px;">新闻标题</th>
+                               <!-- <th class="sorting" tabindex="0" aria-controls="example1"  aria-label="Browser: activate to sort column ascending">新闻类别</th> -->
+                               <th class="sorting" tabindex="0" aria-controls="example1"  aria-label="Platform(s): activate to sort column ascending">描述</th>
+                               <th class="sorting" tabindex="0" aria-controls="example1"  aria-label="Platform(s): activate to sort column ascending">显示</th>
+                               <th class="sorting" tabindex="0" aria-controls="example1"  aria-label="Engine version: activate to sort column ascending">发布时间</th>
+                               <th class="sorting" tabindex="0" align="center" aria-controls="example1"  aria-label="CSS grade: activate to sort column ascending">操作</th>
+                           </tr>
+                         </thead>
+            <tbody>
+            <volist name="cknewsList" id="list">
+                <tr role="row" align="center">
+                     <td>{$list.title|getSubstr=0,33}</td>
+                     <!-- <td>{$list.category}</td> -->
+                     <td>{$list.keywords}</td>
+                     <td>
+                         <img width="20" height="20" src="__PUBLIC__/images/<if condition='$list[is_open] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('ckNews','nid','{$list.nid}','is_open',this)"/>
+                     </td>
+                     <td><?php echo date('Y-m-d h:i:s', $list['add_time']); ?></td>
+                     <td>
+                      <!-- <a target="_blank" href="{:U('Home/ckNews/detail',array('nid'=>$list['nid']))}" data-toggle="tooltip" title="" class="btn btn-info" data-original-title="查看详情"><i class="fa fa-eye"></i></a> -->
+                      <a class="btn btn-primary" href="{:U('Guest/cknews',array('act'=>'edit','nid'=>$list['nid']))}"><i class="fa fa-pencil"></i></a>
+                      <a class="btn btn-danger" href="javascript:if(confirm('你确定要删除?')) location.href='{:U('Guest/cknews',array('act'=>'del','nid'=>$list['nid']))}'"><i class="fa fa-trash-o"></i></a>
+                      <!-- <a href="javascript:void(0);" onclick="ClearAritcleHtml('{$list[nid]}')" class="btn btn-default" title="清除静态缓存页面"><i class="fa fa-fw fa-refresh"></i></a> -->
+                     </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="row">
+    <div class="col-sm-3 text-left"></div>
+    <div class="col-sm-9 text-right">{$page}</div>
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+	
+    /*
+     * 清除静态页面缓存
+     */
+    function ClearcknewsHtml(nid)
+    {
+    	$.ajax({
+				type:'GET',
+				url:"{:U('Admin/System/ClearcknewsHtml')}",
+				data:{nid:nid},
+				dataType:'json',
+				success:function(data){
+					layer.alert(data.msg, {icon: 2});								 
+				}
+		});
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function ClearcknewsThumb(nid)
+    {
+    	$.ajax({
+				type:'GET',
+				url:"{:U('Admin/System/ClearcknewsThumb')}",
+				data:{nid:nid},
+				dataType:'json',
+				success:function(data){
+					layer.alert(data.msg, {icon: 2});								 
+				}
+		});
+    }		
+</script>

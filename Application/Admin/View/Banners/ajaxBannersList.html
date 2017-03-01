@@ -1,0 +1,98 @@
+<form method="post" enctype="multipart/form-data" target="_blank" id="form-order">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td style="width: 1px;" class="text-center">
+                <!--
+                    <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);">
+                -->    
+                </td>                
+                <td class="text-right">
+                    <a href="javascript:sort('banners_id');">ID</a>
+                </td>
+                <td class="text-left">
+                    <a href="javascript:sort('banners_name');">banner名称</a>
+                </td>         
+                <td class="text-left">描述</td> 
+                <td class="text-left">位置</td> 
+                <td class="text-right">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="bannersList" id="list">
+                <tr>
+                    <td class="text-center">
+                       <!-- <input type="checkbox" name="selected[]" value="6">-->
+                        <input type="hidden" name="shipping_code[]" value="flat.flat">
+                    </td>
+                    <td class="text-right">{$list.banners_id}</td>
+                    <td class="text-left">{$list.banners_name|getSubstr=0,33}</td>
+                    <td class="text-left">{$list.banners_remark|getSubstr=0,33}</td>
+                    <td class="text-left">
+                        <?php if($list['local'] == 1) {?> UU财富首页   <?php } ?>
+                        <?php if($list['local'] == 2) {?> 游换购首页   <?php } ?>
+                        <?php if($list['local'] == 3) {?> 游换购图层1  <?php } ?>
+                        <?php if($list['local'] == 4) {?> 游换购图层2  <?php } ?>
+                        <?php if($list['local'] == 5) {?> 游邮册首页   <?php } ?>
+                        <?php if($list['local'] == 6) {?> U旅行首页    <?php } ?>
+                        <?php if($list['local'] == 7) {?> 旅游路线界面 <?php } ?>
+                        <?php if($list['local'] == 8) {?> U企划首页    <?php } ?>
+                        <?php if($list['local'] == 11) {?> U创客首页    <?php } ?>
+                        <?php if($list['local'] == 12) {?> U创客-创业新闻    <?php } ?>
+                    </td>
+                    <td class="text-right">
+                        <!-- <a  target="_blank" href="{:U('Home/banners/bannersInfo',array('id'=>$list['banners_id']))}" class="btn btn-info" title="查看详情"><i class="fa fa-eye"></i></a> -->
+                        <a href="{:U('Admin/banners/addEditbanners',array('id'=>$list['banners_id']))}" class="btn btn-primary" title="编辑"><i class="fa fa-pencil"></i></a>
+                       <a href="javascript:if(confirm('你确定要删除?')) location.href='{:U('Admin/banners/delbanners',array('act'=>del,'id'=>$list['banners_id']))}'" class="btn btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+                        <!--  <a href="javascript:void(0);" onclick="ClearbannersHtml('{$list[banners_id]}')" class="btn btn-default" title="清除静态缓存页面"><i class="fa fa-fw fa-refresh"></i></a>
+                        <a href="javascript:void(0);" onclick="ClearbannersThumb('{$list[banners_id]}')" class="btn btn-default" title="清除缩略图缓存"><i class="glyphicon glyphicon-picture"></i></a> -->
+                    </td>                        
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="row">
+    <div class="col-sm-3 text-left"></div>
+    <div class="col-sm-9 text-right">{$page}</div>
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+	
+    /*
+     * 清除静态页面缓存
+     */
+    function ClearbannersHtml(banners_id)
+    {
+    	$.ajax({
+				type:'GET',
+				url:"{:U('Admin/System/ClearbannersHtml')}",
+				data:{banners_id:banners_id},
+				dataType:'json',
+				success:function(data){
+					layer.alert(data.msg, {icon: 2});								 
+				}
+		});
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function ClearbannersThumb(banners_id)
+    {
+    	$.ajax({
+				type:'GET',
+				url:"{:U('Admin/System/ClearbannersThumb')}",
+				data:{banners_id:banners_id},
+				dataType:'json',
+				success:function(data){
+					layer.alert(data.msg, {icon: 2});								 
+				}
+		});
+    }		
+</script>

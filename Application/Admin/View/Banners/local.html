@@ -1,0 +1,86 @@
+<include file="Public/min-header"/>
+
+<load href="__ROOT__/Public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/Public/plugins/Ueditor/ueditor.all.js"/>
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+   	<section class="content">
+      <div class="row">
+			<div class="col-md-12">
+			
+			<div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Banner</h3>
+          <a href="{:U('Banners/bannersList')}" data-toggle="tooltip" title="" class="btn btn-default pull-right" data-original-title="返回"><i class="fa fa-reply"></i></a>
+        </div>
+
+        <!--表单数据-->
+    <form method="post" id="addEditlocalForm">
+    
+        <!--通用信息-->
+    <div class="tab-content">                     
+        <div class="tab-pane active" id="tab_tongyong">
+           
+          <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td>位置:</td>
+                <td>
+                    <input type="text" id="local" name="local" class="form-control" style="width:350px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>现有位置:</td>
+                <td>
+                <?php foreach ($info as $k => $v): ?>
+                  <input type="text" readonly="true" value="{$v['local']}">
+                <?php endforeach ?>
+                  
+                </td>                                                                       
+            </tr>
+           
+            </tbody>                                
+          </table>
+        </div>
+         <!--其他信息-->
+         
+                                     
+    </div>              
+    <div class="pull-right">
+        <input type="hidden" name="banners_id" value="{$bannersInfo.banners_id}">
+        <button class="btn btn-primary"  id="buts" title="" data-toggle="tooltip" type="button" data-original-title="保存">保存</button>
+    </div>
+    </form><!--表单数据-->
+
+      </div>
+
+      </div>
+	   </div>
+	</section>
+</div>
+<script type="text/javascript">
+  $("#buts").click(function() {
+    var local = $("#local").val();
+    $.ajax({
+      url:"{:U('banners/addEditlocal?is_ajax=1')}",
+      type:'post',
+      // data:{'name名':val值}
+      data:{'local':local},
+      dataType:'json',
+      success:function(data){
+        if(data){
+          alert('数据提交成功');
+          window.location.href="{:U('banners/bannersList')}"
+        }else{
+          alert('数据提交失败');
+        }
+      }
+    })
+  });
+</script>
+</body>
+</html>
